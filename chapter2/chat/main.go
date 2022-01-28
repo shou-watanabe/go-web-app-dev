@@ -9,11 +9,11 @@ import (
 	"sync"
 	"text/template"
 
+	"github.com/joho/godotenv"
 	"github.com/stretchr/gomniauth"
 	"github.com/stretchr/gomniauth/providers/facebook"
 	"github.com/stretchr/gomniauth/providers/github"
 	"github.com/stretchr/gomniauth/providers/google"
-	"github.com/stretchr/objx"
 
 	"go-web-app-dev/chapter2/trace"
 )
@@ -40,10 +40,18 @@ func main() {
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
 
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	clientID := os.Getenv("CLIENT_ID")
+	clientSecret := os.Getenv("CLIENT_SECRET")
+
 	gomniauth.SetSecurityKey("security key")
 	gomniauth.WithProviders(
 		github.New("", "", "http://localhost:8080/auth/callback/github"),
-		google.New("44166123467-o6brs9o43tgaek9q12lef07bk48m3jmf.apps.googleusercontent.com", "rpXpakthfjPVoFGvcf9CVCu7", "http://localhost:8080/auth/callback/google"),
+		google.New(clientID, clientSecret, "http://localhost:8080/auth/callback/google"),
 		facebook.New("", "", "http://localhost:8080/auth/callback/facebook"),
 	)
 
