@@ -1,4 +1,4 @@
-module go-web-app-dev/chat
+module go-web-app-dev/chapter1
 
 go 1.17
 

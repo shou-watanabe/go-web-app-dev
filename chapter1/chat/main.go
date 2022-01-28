@@ -9,7 +9,7 @@ import (
 	"sync"
 	"text/template"
 
-	"go-web-app-dev/chat/trace"
+	"go-web-app-dev/chapter1/trace"
 )
 
 // templ represents a single template
