@@ -9,7 +9,7 @@ import (
 	"sync"
 	"text/template"
 
-	"go-web-app-dev/chat/trace"
+	"go-web-app-dev/chapter2/trace"
 )
 
 // templ represents a single template
@@ -34,7 +34,7 @@ func main() {
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
 
-	http.Handle("/", &templateHandler{filename: "chat.html"})
+	http.Handle("/", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/room", r)
 
 	// get the room going
