@@ -10,7 +10,28 @@ import (
 
 	"github.com/stretchr/gomniauth"
 	"github.com/stretchr/objx"
+
+	gomniauthcommon "github.com/stretchr/gomniauth/common"
 )
+
+var avatars Avatar = TryAvatars{
+	UseFileSystemAvatar,
+	UseAuthAvatar,
+	UseGravatar,
+}
+
+type ChatUser interface {
+	UniqueID() string
+	AvatarURL() string
+}
+type chatUser struct {
+	gomniauthcommon.User
+	uniqueID string
+}
+
+func (u chatUser) UniqueID() string {
+	return u.uniqueID
+}
 
 type authHandler struct {
 	next http.Handler
@@ -67,13 +88,20 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			log.Fatal("ユーザーの取得に失敗しました", provider, "-", err)
 		}
 
+		chatUser := &chatUser{User: user}
+
 		m := md5.New()
 		io.WriteString(m, strings.ToLower(user.Email()))
-		userID := fmt.Sprintf("%x", m.Sum(nil))
+		chatUser.uniqueID = fmt.Sprintf("%x", m.Sum(nil))
+
+		avatarURL, err := avatars.GetAvatarURL(chatUser)
+		if err != nil {
+			log.Fatalln("Error when trying to GetAvatarURL", "-", err)
+		}
 		authCookieValue := objx.New(map[string]interface{}{
-			"userid": userID,
+			"userid": chatUser.uniqueID,
 			"name":   user.Name(),
-			"avatar": user.AvatarURL(),
+			"avatar": avatarURL,
 			"email":  user.Email(),
 		}).MustBase64()
 		http.SetCookie(w, &http.Cookie{

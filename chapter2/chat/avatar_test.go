@@ -1,6 +1,10 @@
 package main
 
 import (
+	"io/ioutil"
+	"os"
+	"path"
+
 	gomniauthtest "github.com/stretchr/gomniauth/test"
 
 	"testing"
@@ -45,27 +49,27 @@ func TestGravatarAvatar(t *testing.T) {
 
 }
 
-// func TestFileSystemAvatar(t *testing.T) {
+func TestFileSystemAvatar(t *testing.T) {
 
-// 	// make a test avatar file
-// 	filename := path.Join("avatars", "abc.jpg")
-// 	if err := os.MkdirAll("avatars", 0777); err != nil {
-// 		t.Errorf("couldn't make avatar dir: %s", err)
-// 	}
-// 	if err := ioutil.WriteFile(filename, []byte{}, 0777); err != nil {
-// 		t.Errorf("couldn't make avatar: %s", err)
-// 	}
-// 	defer os.Remove(filename)
+	// make a test avatar file
+	filename := path.Join("avatars", "abc.jpg")
+	if err := os.MkdirAll("avatars", 0777); err != nil {
+		t.Errorf("couldn't make avatar dir: %s", err)
+	}
+	if err := ioutil.WriteFile(filename, []byte{}, 0777); err != nil {
+		t.Errorf("couldn't make avatar: %s", err)
+	}
+	defer os.Remove(filename)
 
-// 	var fileSystemAvatar FileSystemAvatar
-// 	user := &chatUser{uniqueID: "abc"}
+	var fileSystemAvatar FileSystemAvatar
+	user := &chatUser{uniqueID: "abc"}
 
-// 	url, err := fileSystemAvatar.GetAvatarURL(user)
-// 	if err != nil {
-// 		t.Errorf("FileSystemAvatar.GetAvatarURL should not return an error: %s", err)
-// 	}
-// 	if url != "/avatars/abc.jpg" {
-// 		t.Errorf("FileSystemAvatar.GetAvatarURL wrongly returned %s", url)
-// 	}
+	url, err := fileSystemAvatar.GetAvatarURL(user)
+	if err != nil {
+		t.Errorf("FileSystemAvatar.GetAvatarURL should not return an error: %s", err)
+	}
+	if url != "/avatars/abc.jpg" {
+		t.Errorf("FileSystemAvatar.GetAvatarURL wrongly returned %s", url)
+	}
 
-// }
+}
