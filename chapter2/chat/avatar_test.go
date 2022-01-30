@@ -30,20 +30,20 @@ func TestAuthAvatar(t *testing.T) {
 	}
 }
 
-// func TestGravatarAvatar(t *testing.T) {
+func TestGravatarAvatar(t *testing.T) {
 
-// 	var gravatarAvatar GravatarAvatar
-// 	user := &chatUser{uniqueID: "abc"}
+	var gravatarAvatar GravatarAvatar
+	user := &chatUser{uniqueID: "abc"}
 
-// 	url, err := gravatarAvatar.GetAvatarURL(user)
-// 	if err != nil {
-// 		t.Error("GravatarAvatar.GetAvatarURL should not return an error")
-// 	}
-// 	if url != "//www.gravatar.com/avatar/abc" {
-// 		t.Errorf("GravatarAvatar.GetAvatarURL wrongly returned %s", url)
-// 	}
+	url, err := gravatarAvatar.GetAvatarURL(user)
+	if err != nil {
+		t.Error("GravatarAvatar.GetAvatarURL should not return an error")
+	}
+	if url != "//www.gravatar.com/avatar/abc" {
+		t.Errorf("GravatarAvatar.GetAvatarURL wrongly returned %s", url)
+	}
 
-// }
+}
 
 // func TestFileSystemAvatar(t *testing.T) {
 
